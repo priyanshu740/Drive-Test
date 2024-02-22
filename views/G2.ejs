@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('layout/header.ejs'); -%>
+
+  <body>
+    <!-- Navigation-->
+    <%- include('layout/navbar.ejs'); -%>
+      <!-- Main Content-->
+      <main class="mb-4">
+        <div class="container px-4 px-lg-5">
+          <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7" style="margin-top: 100px;">
+              <!-- For Personal Info -->
+              <h2>Personal Information</h2>
+              <div class="my-5">
+                <form id="contactForm" action="/" method="post">
+                  <div class="form-floating my-3">
+                    <input class="form-control" name="firstname" id="firstname" type="text"
+                      placeholder="Enter your first name" required />
+                    <label for="firstname">First Name</label>
+                    <span class="error-message" id="firstname-error" style="color: red;"></span>
+                  </div>
+
+                  <div class="form-floating my-3">
+                    <input class="form-control" name="lastname" id="lastname" type="text"
+                      placeholder="Enter your last name" required />
+                    <label for="lastname">Last Name</label>
+                    <span class="error-message" id="lastname-error" style="color: red;"></span>
+                  </div>
+
+                  <div class="form-floating my-3">
+                    <input class="form-control" name="license_no" id="license_no" type="text"
+                      placeholder="Enter your license number..." required />
+                    <label for="license_no">License Plat Number</label>
+                  </div>
+
+                  <div class="form-floating my-3">
+                    <input class="form-control" name="age" id="age" type="number" min="18" max="60" placeholder="Age"
+                      required />
+                    <label for="number">Age</label>
+                  </div>
+
+                  <div class="form-floating my-3">
+                    <input class="form-control " name="dob" id="dob" type="date" placeholder="Date of birth" required />
+                    <label for="date">DOB</label>
+                  </div>
+
+                  <br />
+
+                  <!--For Car details -->
+                  <h2 class="my-5">Car Details</h2>
+
+                  <div class="form-floating my-3">
+                    <input class="form-control" name="make" id="name" type="text" placeholder="Car's ie make"
+                      required />
+                    <label for="make">IE Make</label>
+                    <span class="error-message" id="make-error" style="color: red;"></span>
+                  </div>
+
+                  <div class="form-floating my-3">
+                    <input class="form-control" name="model" id="model" type="text" placeholder="Car's model"
+                      required />
+                    <label for="model">Model</label>
+                    <span class="error-message" id="model-error" style="color: red;"></span>
+                  </div>
+
+                  <div class="form-floating my-3">
+                    <input class="form-control" name="year" id="year" type="number" placeholder="Car's year" required />
+                    <label for="year">Year</label>
+                    <span class="error-message" id="year-error" style="color: red;"></span>
+                  </div>
+
+                  <div class="form-floating my-3">
+                    <input class="form-control" name="platno" id="platno" type="text" placeholder="Car's plat number"
+                      required />
+                    <label for="platno">Plat Number</label>
+                    <span class="error-message" id="platno-error" style="color: rgb(244, 40, 40);"></span>
+                  </div>
+                  <br />
+
+                  <button class="btn btn-secondary text-uppercase">
+                    Submit
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <!-- Footer-->
+      <%- include('layout/footer.ejs'); -%>
+
+      <!-- Scripts  -->
+      <%- include('layout/script.ejs'); -%>
+  </body>
+
+</html>
