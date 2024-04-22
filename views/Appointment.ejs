@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Header -->
+<%- include('layout/header.ejs'); -%>
+
+    <body style="background-color: #f8f9fa;">
+        <main class="mb-4">
+            <div class="container px-4">
+                <div class="row gx-2 gx-lg-2 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7" style="margin-top: 100px;">
+                        <div>
+                            <div class="card-wrapper" style="margin-bottom: 20px;">
+                                <div class="card"
+                                    style="background-color: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                                    <h2 style="margin-bottom: 20px; color: #007bff;">Add Appointment Slot</h2>
+                                    <form action="/appointment" method="post">
+                                        <div class="mb-3">
+                                            <label for="date" class="form-label">Date</label>
+                                            <input type="date" class="form-control" id="date" name="date" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="time" class="form-label">Time</label>
+                                            <select id="time" name="time" class="form-select"
+                                                aria-label="Select time Slot">
+                                                <option value="9.00 AM">9.00 AM</option>
+                                                <option value="9.30 AM">9.30 AM</option>
+                                                <option value="10.00 AM">10.00 AM</option>
+                                                <option value="10.30 AM">10.30 AM</option>
+                                                <option value="11.00 AM">11.00 AM</option>
+                                                <option value="11.30 AM">11.30 AM</option>
+                                                <option value="12.00 PM">12.00 PM</option>
+                                                <option value="12.30 PM">12.30 PM</option>
+                                                <option value="13.00 PM">13.00 PM</option>
+                                                <option value="13.30 PM">13.30 PM</option>
+                                                <option value="14.00 PM">14.00 PM</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="slotsAvailable" class="form-label">Slots Available</label>
+                                            <input type="number" class="form-control" id="slotsAvailable"
+                                                name="slotsAvailable" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary"
+                                            style="background-color: #007bff; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Add
+                                            Appointment</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="card-wrapper" style="margin-bottom: 20px;">
+                                <div class="card"
+                                    style="background-color: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                                    <h2 style="margin-bottom: 20px; color: #007bff;">Existing Appointment Slots</h2>
+                                    <table class="table" style="width: 100%; border-collapse: collapse;">
+                                        <thead>
+                                            <tr>
+                                                <th
+                                                    style="background-color: #007bff; color: #fff; text-align: left; border: 1px solid #dee2e6; padding: 8px;">
+                                                    Date</th>
+                                                <th
+                                                    style="background-color: #007bff; color: #fff; text-align: left; border: 1px solid #dee2e6; padding: 8px;">
+                                                    Time</th>
+                                                <th
+                                                    style="background-color: #007bff; color: #fff; text-align: left; border: 1px solid #dee2e6; padding: 8px;">
+                                                    Slots</th>
+                                                <th
+                                                    style="background-color: #007bff; color: #fff; text-align: left; border: 1px solid #dee2e6; padding: 8px;">
+                                                    isDisabled</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer-->
+        <%- include('layout/footer.ejs'); -%>
+            <!-- Scripts  -->
+            <%- include('layout/script.ejs'); -%>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        fetch('/getAppointmentDetails', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({})
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                // Access the data object from the response
+                                const appointments = data.data;
+
+                                const tbody = document.querySelector('tbody');
+
+                                // Clear existing rows
+                                tbody.innerHTML = '';
+
+                                // Iterate over each appointment and create a row in the table
+                                appointments.forEach(appointment => {
+                                    console.log(appointment, "appointment");
+                                    const tr = document.createElement('tr');
+                                    tr.innerHTML = `
+                                        <td style="border: 1px solid #dee2e6; padding: 8px;">${appointment.date}</td>
+                                        <td style="border: 1px solid #dee2e6; padding: 8px;">${appointment.time}</td>
+                                        <td style="border: 1px solid #dee2e6; padding: 8px;">${appointment.isTimeSlotAvailable}</td>
+                                        <td style="border: 1px solid #dee2e6; padding: 8px;">${appointment.isDisabled}</td>
+                                        <td style="border: 1px solid #dee2e6; padding: 8px;">
+                                            <td style="border: 1px solid #dee2e6; padding: 8px;">
+                                                    <button class="btn btn-outline-secondary disable-btn" data-id="${appointment._id}" style="margin-right: 5px; background-color:#CCCCCC">Disable</button>
+                                                    <button class="btn btn-outline-success enable-btn" data-id="${appointment._id}" style="margin-right: 5px;">Enable</button>
+                                            </td>
+                                        </td>
+                                    `;
+                                    tbody.appendChild(tr);
+                                });
+
+                                // Add event listeners to the buttons
+                                const disableButtons = document.querySelectorAll('.disable-btn');
+                                disableButtons.forEach(button => {
+                                    button.addEventListener('click', function () {
+                                        // button.style.backgroundColor = '#CCCCCC';
+                                        const appointmentId = button.getAttribute('data-id');
+                                        toggleAppointment(appointmentId, false);
+                                    });
+                                });
+
+                                const enableButtons = document.querySelectorAll('.enable-btn');
+                                enableButtons.forEach(button => {
+                                    button.addEventListener('click', function () {
+                                        button.style.backgroundColor = '#AFE1AF';
+
+                                        const appointmentId = button.getAttribute('data-id');
+                                        toggleAppointment(appointmentId, true);
+                                    });
+                                });
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+
+                        // API call, on click of disable button to (for ADMIN only)
+                        function toggleAppointment(id, isAvailable) {
+                            fetch(`/toggleAppointmentSlots/${id}`, {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ isTimeSlotAvailable: isAvailable })
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                });
+                        }
+                    });
+                </script>
+
+                <!-- Bootstrap Bundle with Popper -->
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    </body>
+
+</html>

@@ -1,0 +1,82 @@
+<!-- Navbar code  -->
+<nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="/">Book DriveTest</a>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                <% if (userType==="Driver" ) { %>
+                    <li class="nav-item">
+                        <a class="nav-link px-lg-3 py-3 py-lg-4" href="/g2">G2_Test</a>
+                    </li>
+                    <% if (userType==="Driver" ) { %>
+                        <li class="nav-item">
+                            <a id="gTestLink" class="nav-link px-lg-3 py-3 py-lg-4" href="/G">G_Test</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-lg-3 py-3 py-lg-4" href="/logout">Logout</a>
+                        </li>
+                        <% } %>
+                            <% } else if (userType==="Admin" ) { %>
+                                <li class="nav-item">
+                                    <a class="nav-link px-lg-3 py-3 py-lg-4" href="/">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link px-lg-3 py-3 py-lg-4" href="/appointment">Appointment</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link px-lg-3 py-3 py-lg-4" href="/logout">Logout</a>
+                                </li>
+                                <% } else if (userType==="Examiner") { %>
+                                    <li class="nav-item">
+                                        <a class="nav-link px-lg-3 py-3 py-lg-4" href="/">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link px-lg-3 py-3 py-lg-4" href="/examiner">Examiner</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link px-lg-3 py-3 py-lg-4" href="/logout">Logout</a>
+                                    </li>
+                                <% } else { %>
+                                    <li class="nav-item">
+                                        <a class="nav-link px-lg-3 py-3 py-lg-4" href="/">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link px-lg-3 py-3 py-lg-4" href="/login">Login</a>
+                                    </li>
+                                    <% } %>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- For navigating to G page, when user is authenticated -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const gTestLink = document.getElementById("gTestLink");
+        if (gTestLink) {
+            gTestLink.addEventListener("click", function (event) {
+                event.preventDefault();
+
+                // Make a request to the "/getUserDataByLicenceNum" endpoint
+                fetch('/getUserDataByLicenceNum', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                })
+                    .then(response => {
+                        // Handle the response from the server
+                        if (response.ok) {
+                            window.location.href = '/G';
+                        } else {
+                            console.error('Error:', response.statusText);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            });
+        }
+    });
+</script>

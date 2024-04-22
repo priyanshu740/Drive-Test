@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Add this line -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Header -->
+<%- include('layout/header.ejs'); -%>
+
+    <body>
+        <!-- Navigation-->
+        <%- include('layout/navbar.ejs'); -%>
+
+            <!-- Page Header-->
+            <header class="masthead">
+                <div class="container position-relative px-4 px-lg-5">
+                    <div class="row gx-4 gx-lg-5 justify-content-center">
+                        <div class="col-md-10 col-lg-8 col-xl-7">
+                            <div class="site-heading">
+                                <h1>Login</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <form id="loginForm" action="/loginUser" method="POST" style="display: block;">
+                            <h2>Login</h2>
+                            <div class="form-floating my-3">
+                                <input class="form-control" name="username" id="username" type="text"
+                                    placeholder="Enter your username" required />
+                                <label for="username">User Name</label>
+                                <span class="error-message" id="firstname-error" style="color: red;"></span>
+                            </div>
+
+                            <div class="form-floating my-3">
+                                <input class="form-control" name="password" id="password" type="text"
+                                    placeholder="Enter your password" required />
+                                <label for="password">Password</label>
+                                <span class="error-message" id="lastname-error" style="color: red;"></span>
+                            </div>
+                            <br />
+
+                            <button type="submit" class="btn btn-secondary text-uppercase">
+                                Login
+                            </button>
+
+                            <p>Don't have an account? <a href="#" id="signup-link"><b>Sign Up</b></a></p>
+                        </form>
+
+                        <form id="signUpForm" action="/registerUser" method="POST" style="display: none;">
+                            <h2>Sign Up</h2>
+                            <div class="form-floating my-3">
+                                <input class="form-control" name="username" id="username" type="text"
+                                    placeholder="Enter your username" required />
+                                <label for="username">User Name</label>
+                                <span class="error-message" id="firstname-error" style="color: red;"></span>
+                            </div>
+
+                            <div class="form-floating my-3">
+                                <input class="form-control" name="password" id="password" type="text"
+                                    placeholder="Enter your password" required />
+                                <label for="password">Password</label>
+                                <span class="error-message" id="lastname-error" style="color: red;"></span>
+                            </div>
+
+                            <div class="form-floating my-3">
+                                <input class="form-control" name="confirmPassword" id="confirmPassword" type="text"
+                                    placeholder="confirmPassword" required />
+                                <label for="confirmPassword">Confirm Password</label>
+                                <span class="error-message" id="make-error" style="color: red;"></span>
+                            </div>
+
+                            <div class="form-group my-3">
+                                <label for="userType" class="my-3">User Type</label>
+                                <select id="usertype" name="userType" class="form-control">
+                                    <option value="Driver">Driver</option>
+                                    <option value="Admin">Admin</option>
+                                    <option value="Examiner">Examiner</option>
+                                </select>
+                            </div>
+                            <br />
+
+                            <button type="submit" class="btn btn-secondary text-uppercase mb-5">
+                                Sign In
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer-->
+            <%- include('layout/footer.ejs'); -%>
+
+                <!-- Scripts  -->
+                <%- include('layout/script.ejs'); -%>
+
+                    <!-- For toggling display of login/sogn in form's -->
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const loginForm = document.getElementById("loginForm");
+                            const signUpForm = document.getElementById("signUpForm");
+
+                            const signUpLink = document.getElementById("signup-link");
+
+                            signUpLink.addEventListener("click", function (event) {
+                                event.preventDefault();
+                                loginForm.style.display = "none";
+                                signUpForm.style.display = "block";
+                            });
+                        });
+                    </script>
+    </body>
+
+</html>

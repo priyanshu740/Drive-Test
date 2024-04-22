@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Header -->
+<%- include('layout/header.ejs'); -%>
+
+    <body id="appointmentData" style="background-color: #f8f9fa;">
+        <main class="mb-4">
+            <div class="container px-4">
+                <div class="row gx-2 gx-lg-2 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7" style="margin-top: 100px;">
+                        <div>
+                            <div class="card-wrapper" style="margin-bottom: 20px;">
+                                <div class="card"
+                                    style="background-color: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                                    <h2 style="margin-bottom: 20px; color: #007bff;">Appointment's Booked</h2>
+                                    <table class="table" style="width: 100%; border-collapse: collapse;">
+                                        <thead>
+                                            <tr>
+                                                <th
+                                                    style="background-color: #007bff; color: #fff; text-align: left; border: 1px solid #dee2e6; padding: 8px;">
+                                                    Firstname</th>
+                                                <th
+                                                    style="background-color: #007bff; color: #fff; text-align: left; border: 1px solid #dee2e6; padding: 8px;">
+                                                    Lastname</th>
+                                                <th
+                                                    style="background-color: #007bff; color: #fff; text-align: left; border: 1px solid #dee2e6; padding: 8px;">
+                                                    Plat no</th>
+                                                <th
+                                                    style="background-color: #007bff; color: #fff; text-align: left; border: 1px solid #dee2e6; padding: 8px;">
+                                                    Test Type</th>
+                                                <th
+                                                    style="background-color: #007bff; color: #fff; text-align: left; border: 1px solid #dee2e6; padding: 8px;">
+                                                    Driver Details </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer-->
+        <%- include('layout/footer.ejs'); -%>
+            <!-- Scripts  -->
+            <%- include('layout/script.ejs'); -%>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        fetch('/getBookedAppointmentDetails') // Assuming your API endpoint is '/getBookedAppointmentDetails'
+                            .then(response => response.json())
+                            .then(data => {
+                                const appointmentData = document.querySelector('tbody');
+                                appointmentData.innerHTML = ''; // Clear any existing data in the table body
+                                data.forEach(appointment => {
+                                    appointmentData.innerHTML += `
+                                <tr>
+                                    <td>${appointment.firstName}</td>
+                                    <td>${appointment.lastName}</td>
+                                    <td>${appointment.carDetails.platno}</td>
+                                    <td>${appointment.TestType}</td>
+                                    <td>
+                                        <input type="text" placeholder="Enter comment" id="commentInput${appointment._id}" onkeypress="handleKeyPress(event, '${appointment._id}', '${appointment.TestType}')">
+                                        <button onclick="submitStatus('${appointment._id}', 'Pass')">Pass</button>
+                                        <button onclick="submitStatus('${appointment._id}', 'Fail')">Fail</button>
+                                    </td>
+                                </tr>
+                            `;
+                                });
+                            })
+                            .catch(error => {
+                                console.error('Error fetching appointment data:', error);
+                            });
+                    });
+
+                    // function handleKeyPress(event, appointmentId, testType) {
+                    //     if (event.key === 'Enter') {
+                    //         const commentInput = document.getElementById('commentInput' + appointmentId);
+                    //         const comment = commentInput.value;
+                    //         submitStatus(appointmentId, testType, comment);
+                    //     }
+                    // }
+
+                    async function submitStatus(appointmentId, status) {
+                        const commentInput = document.getElementById('commentInput' + appointmentId);
+                        const comment = commentInput.value;
+
+                        try {
+                            const response = await fetch('/changeStatusOfTest', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    id: appointmentId,
+                                    comment,
+                                    status
+                                })
+                            });
+                            if (response.ok) {
+                                // Handle success
+                                alert('Status changed successfully');
+                            } else {
+                                // Handle error
+                                alert('Failed to change status');
+                            }
+                        } catch (error) {
+                            console.error('Error changing status:', error);
+                        }
+                    }
+                </script>
+
+                <!-- Bootstrap Bundle with Popper -->
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    </body>
+
+</html>

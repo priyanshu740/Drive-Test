@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Header -->
+<%- include('layout/header.ejs'); -%>
+
+  <body>
+    <!-- Navigation-->
+    <%- include('layout/navbar.ejs'); -%>
+      <main style="margin: 100px 0px 310px 0px;">
+
+        <main class="mb-4">
+          <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+              <div class="col-md-10 col-lg-8 col-xl-7">
+              
+                <!-- For Personal Info -->
+                <h2>Personal Information</h2>
+                <div class="my-5">
+                  <form id="userUpdateForm" action="/update/carDetails" method="POST">
+                    <div class="form-floating my-3">
+                      <input class="form-control" name="firstName" id="firstName" type="text" required />
+                      <label for="firstName">First Name</label>
+                      <span class="error-message" id="firstname-error" style="color: red;"></span>
+                    </div>
+
+                    <div class="form-floating my-3">
+                      <input class="form-control" name="lastName" id="lastName" type="text" required readonly />
+                      <label for="lastName">Last Name</label>
+                      <span class="error-message" id="lastname-error" style="color: red;"></span>
+                    </div>
+
+                    <div class="form-floating my-3">
+                      <input class="form-control" name="licenceNumber" id="licenceNumber" type="text" required
+                        readonly />
+                      <label for="licenceNumber">License Plat Number</label>
+                    </div>
+
+                    <div class="form-floating my-3">
+                      <input class="form-control" name="Age" id="Age" type="number" min="18" max="60" required
+                        readonly />
+                      <label for="Age">Age</label>
+                    </div>
+
+                    <div class="form-floating my-3">
+                      <input class="form-control " name="Dob" id="Dob" type="date" required readonly />
+                      <label for="Dob">DOB</label>
+                    </div>
+
+                    <br />
+
+                    <h2 class="my-5">Car Details</h2>
+
+                    <div class="form-floating my-3">
+                      <input class="form-control" name="make" id="make" type="text" placeholder="Car's ie make"
+                        required />
+                      <label for="make">IE Make</label>
+                      <span class="error-message" id="make-error" style="color: red;"></span>
+                    </div>
+
+                    <div class="form-floating my-3">
+                      <input class="form-control" name="model" id="model" type="text" placeholder="Car's model"
+                        required />
+                      <label for="model">Model</label>
+                      <span class="error-message" id="model-error" style="color: red;"></span>
+                    </div>
+
+                    <div class="form-floating my-3">
+                      <input class="form-control" name="year" id="year" type="number" placeholder="Car's year"
+                        required />
+                      <label for="year">Year</label>
+                      <span class="error-message" id="year-error" style="color: red;"></span>
+                    </div>
+
+                    <div class="form-floating my-3">
+                      <input class="form-control" name="platno" id="platno" type="text" placeholder="Car's plat number"
+                        required />
+                      <label for="platno">Plat Number</label>
+                      <span class="error-message" id="platno-error" pattern="[A-Za-z0-9]{8}" style="color: rgb(244, 40, 40);"></span>
+                    </div>
+                    <br />
+
+                    <button class="btn btn-secondary text-uppercase" type="submit" id="submitButton">
+                      Update
+                    </button>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </main>
+      <!-- Footer-->
+      <%- include('layout/footer.ejs'); -%>
+        <!-- Scripts  -->
+        <%- include('layout/script.ejs'); -%>
+
+          <!-- To fetch and populate form data -->
+          <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              // Fetch user data from the API
+              fetch('/getUserDataByLicenceNum', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})
+              })
+                .then(response => response.json())
+                .then(data => {
+                  // Populate form fields with received data
+                  document.getElementById('firstName').value = data.firstName;
+                  document.getElementById('lastName').value = data.lastName;
+                  document.getElementById('licenceNumber').value = data.decryptedLicenceNUmber;
+                  document.getElementById('Age').value = data.Age;
+                  document.getElementById('Dob').value = data.Dob;
+                  document.getElementById('make').value = data.carDetails.make;
+                  document.getElementById('model').value = data.carDetails.model;
+                  document.getElementById('year').value = data.carDetails.year;
+                  document.getElementById('platno').value = data.carDetails.platno;
+                })
+                .catch(error => {
+                  console.error('Error:', error);
+                });
+            });
+          </script>
+  </body>
+
+</html>
